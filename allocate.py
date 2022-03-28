@@ -30,16 +30,34 @@ HISTORICAL_COVARIANCE_MATRIX = np.array([[0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.
                                          [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02],
                                          [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02]])
 
-def allocate_portfolio(asset_prices, asset_price_predictions_1\
-                       asset_price_predictions_2,\
+def allocate_portfolio(asset_prices, 
+                       asset_price_predictions_1,
+                       asset_price_predictions_2,
                        asset_price_predictions_3):
-    
-    # This simple strategy equally weights all assets every period
-    # (called a 1/n strategy).
-    
-    n_assets = len(asset_prices)
-    weights = np.repeat(1 / n_assets, n_assets)
-    return weights
+
+    Q = getPredictedReturnsMatrix(asset_prices, 
+                                  asset_price_predictions_1,
+                                  asset_price_predictions_2,
+                                  asset_price_predictions_3)
+
+
+# Inputs: Numpy Arrays
+def getPredictedReturnsMatrix(currPrices, 
+                              predPrices1, 
+                              predPrices2, 
+                              predPrices3):
+    predReturns1 = getReturns(currPrices, predPrices1)
+    predReturns2 = getReturns(currPrices, predPrices2)
+    predReturns3 = getReturns(currPrices, predPrices3)
+    predReturnsMatrix = np.array([predReturns1,
+                                  predReturns2,
+                                  predReturns3])
+    return predReturnsMatrix
+
+# Inputs: Numpy Arrays
+# - Currently using logarithmic returns, to change later
+def getReturns(prevPrices, nextPrices):
+    return np.log(np.true_divide(nextPrices, prevPrices))
 
 # Inputs: Numpy Arrays
 def getMarketCapWeightsVector(sharesOutstanding, assetPrices):
