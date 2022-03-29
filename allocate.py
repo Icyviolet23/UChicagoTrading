@@ -7,7 +7,9 @@ import scipy
 ## for one day and allocate your portfolio accordingly.                ##
 #########################################################################
 
+# ##############################
 # CONSTANTS
+# ##############################
 
 SHARES_OUTSTANDING = np.array([425000000, 
                                246970000,
@@ -30,29 +32,32 @@ HISTORICAL_COVARIANCE_MATRIX = np.array([[0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.
                                          [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02],
                                          [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02]])
 
+# ##############################
+# ALLOCATE_PORTFOLIO 
+# ##############################
+
 def allocate_portfolio(asset_prices, 
                        asset_price_predictions_1,
                        asset_price_predictions_2,
                        asset_price_predictions_3):
+    # Calculate 3 expected returns E(R) matrices with 3 given analyst predictions
+    ER1 = getExpectedReturns(asset_prices, asset_price_predictions_1)
+    ER2 = getExpectedReturns(asset_prices, asset_price_predictions_2)
+    ER3 = getExpectedReturns(asset_prices, asset_price_predictions_3)
+    # TO DO: Get a weighted average of the 3 E(R) values based on accuracies of analysts
+    # TO DO: Iterate over some weight matrices and see which has the best Sharpe ratio
 
-    Q = getPredictedReturnsMatrix(asset_prices, 
-                                  asset_price_predictions_1,
-                                  asset_price_predictions_2,
-                                  asset_price_predictions_3)
+# ##############################
+# BIG HELPER FUNCTIONS
+# ##############################
+
+def getExpectedReturns(currPrices, predPrices):
+    Q = getReturns(currPrices, predPrices)
 
 
-# Inputs: Numpy Arrays
-def getPredictedReturnsMatrix(currPrices, 
-                              predPrices1, 
-                              predPrices2, 
-                              predPrices3):
-    predReturns1 = getReturns(currPrices, predPrices1)
-    predReturns2 = getReturns(currPrices, predPrices2)
-    predReturns3 = getReturns(currPrices, predPrices3)
-    predReturnsMatrix = np.array([predReturns1,
-                                  predReturns2,
-                                  predReturns3])
-    return predReturnsMatrix
+# ##############################
+# SMALL HELPER FUNCTIONS
+# ##############################
 
 # Inputs: Numpy Arrays
 # - Currently using logarithmic returns, to change later
