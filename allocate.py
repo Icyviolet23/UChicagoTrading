@@ -21,6 +21,19 @@ SHARES_OUTSTANDING = np.array([425000000,
                                7510000000,
                                508840000])
 
+MARKET_CAP_WEIGHTS = np.array([0.00732755, 
+                               0.00736718, 
+                               0.01086331, 
+                               0.0388959, 
+                               0.03170921,
+                               0.01237441, 
+                               0.37441448, 
+                               0.3110686 , 
+                               0.20597937])
+
+# Risk aversion coefficient
+LAMBDA = 2
+
 # Temporary values
 HISTORICAL_COVARIANCE_MATRIX = np.array([[0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02],
                                          [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02],
@@ -73,8 +86,21 @@ def allocate_portfolio(asset_prices,
         DF.loc[len(DF)] = data
         print(DF)
 
+    # Calculate covariance matrix (bigSigma)
+    returns = np.log(DF_PRICES).diff() # DataFrame
+    bigSigma = returns.cov().to_numpy()
+    print(bigSigma)
 
-    # bigSigma = getCovarianceMatrix()
+    # Calculate implied excess equilibrium returns (bigPi)
+    bigPi = LAMBDA * (bigSigma @ MARKET_CAP_WEIGHTS)
+    print(bigPi)
+
+    # Calculate diagonal matrix representing uncertainty of view (bigOmega)
+    # (Since we're using only absolute views, this should be same for all views)
+    diagonalValues = [bigSigma[x, x] * LAMBDA for x in range(9)]
+    bigOmega = np.diag(diagonalValues)
+    print(bigOmega)
+    
     # # Calculate 3 expected returns E(R) matrices with 3 given analyst predictions
     # ER1 = getExpectedReturns(asset_prices, asset_price_predictions_1)
     # ER2 = getExpectedReturns(asset_prices, asset_price_predictions_2)
