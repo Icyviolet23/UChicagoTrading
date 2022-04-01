@@ -3,8 +3,17 @@ import pandas as pd
 import scipy
 
 #########################################################################
-## Change this code to take in all asset price data and predictions    ##
-## for one day and allocate your portfolio accordingly.                ##
+## How to use:    ##
+# ## allocate_portfolio(asset_prices, 
+#                        asset_price_predictions_1,
+#                        asset_price_predictions_2,
+#                        asset_price_predictions_3)                
+
+#We have provided the above function in the specified format. The arguments to
+#the function above should be single 9 element arrays or single rows of a 
+#9 column dataframe
+#The output of this function is a 9 element array of weights corresponding to
+#each stock
 #########################################################################
 
 # ##############################
@@ -152,7 +161,7 @@ def generateWeights (predictedReturn, covMatrix):
     bestWeight = None
     skip = 1 #we make 5% adjustment each time
     bestSharpeRatio = -1000000
-    iterations = 10000
+    iterations = 20000
     for i in range(iterations):
         weightsArray = np.random.dirichlet(np.ones(9),size=1)
         weights = np.transpose(np.asmatrix(weightsArray))
@@ -162,30 +171,6 @@ def generateWeights (predictedReturn, covMatrix):
         if sharpeRatio > bestSharpeRatio:
             bestWeight = weights
             bestSharpeRatio = sharpeRatio
-
-    """
-    for w1 in range(0, 100, skip):
-        for w2 in range(0, 100 - w1, skip):
-            for w3 in range(0, 100 - w1 - w2, skip):
-                for w4 in range(0, 100 - w1 - w2 - w3, skip):
-                    for w5 in range(0, 100 - w1 - w2 - w3 - w4, skip):
-                        for w6 in range(0, 100 - w1 - w2 - w3 - w4 - w5, skip):
-                            for w7 in range(0, 100 - w1 - w2 - w3 - w4 -w5 -w6, skip):
-                                for w8 in range(0, 100 - w1 - w2 - w3 - w4 -w5 -w6 -w7, skip):
-                                    for w9 in range(0, 100 - w1 - w2 - w3 - w4 -w5 -w6 -w7-w8, skip):
-                                        weightsArray = [w1, w2, w3, w4, w5, w6, w7, w8, w9]
-                                        print(weightsArray)
-                                        if (sum(weightsArray) != 100): continue  
-                                        else:
-                                            weightsArray = [w1/100, w2/100, w3/100, w4/100, w5/100, w6/100, w7/100, w8/100, w9/100]
-                                            weights = np.transpose(np.asmatrix(weightsArray))   
-                                            stdDev = generatePortfolioStdDev (weights, covMatrix)
-                                            EReturn = np.dot (predictedReturn, weights)
-                                            sharpeRatio = EReturn/stdDev
-                                            if sharpeRatio > bestSharpeRatio:
-                                                bestWeight = weights
-                                                bestSharpeRatio = sharpeRatio
-    """
     return bestWeight
                 
 
@@ -227,12 +212,12 @@ def test():
                        [98.18867628,	257.8457167,	135.9126622,	83.50970224,	123.0132427,	43.28584419,	144.913266,	351.1300353,	3888.316207],
                        [128.0097445,	321.4693291,	205.9085143,	95.20471768,	52.06143928,	39.07667906,	84.49135392,	328.8131346,	2759.588444])
 
-    for i in range (100):
+    for i in range (500, 600):
         weight = allocate_portfolio (DF_PRICES.iloc[i], DF_PREDICTED_PRICES_1.iloc[i], DF_PREDICTED_PRICES_2.iloc[i], DF_PREDICTED_PRICES_3.iloc[i])
         print(weight)
 
 
-test()
+#test()
 
 
 
