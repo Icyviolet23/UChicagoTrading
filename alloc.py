@@ -14,7 +14,26 @@ import scipy
 #9 column dataframe
 #The output of this function is a 9 element array of weights corresponding to
 #each stock
+
+# Do remember to populate the given dataframes with the corresponding
+# Historical data below
 #########################################################################
+# To populate with given historical data (in CSV files)
+# To update on each call of allocate_portfolio with new data
+# Assume these are populated exactly the same as if using pd.read_csv()
+# POPULATE YOUR DATA HERE: An example is as shown below
+"""
+DF_PRICES = pd.read_csv("Acutal Testing Data.csv")
+DF_PREDICTED_PRICES_1 = pd.read_csv("Predicted Testing Data Analyst 1.csv")
+DF_PREDICTED_PRICES_2 = pd.read_csv("Predicted Testing Data Analyst 2.csv")
+DF_PREDICTED_PRICES_3 = pd.read_csv("Predicted Testing Data Analyst 3.csv")
+"""
+DF_PRICES = pd.DataFrame()
+DF_PREDICTED_PRICES_1 = pd.DataFrame()
+DF_PREDICTED_PRICES_2 = pd.DataFrame()
+DF_PREDICTED_PRICES_3 = pd.DataFrame()
+#########################################################################
+
 
 # ##############################
 # CONSTANTS
@@ -31,15 +50,9 @@ MARKET_CAP_WEIGHTS = np.array([0.00732755,
                                0.20597937])
 
 # Risk aversion coefficient
-LAMBDA = 2
+LAMBDA = 1.5
 
-# To populate with given historical data (in CSV files)
-# To update on each call of allocate_portfolio with new data
-# Assume these are populated exactly the same as if using pd.read_csv()
-DF_PRICES = pd.DataFrame()
-DF_PREDICTED_PRICES_1 = pd.DataFrame()
-DF_PREDICTED_PRICES_2 = pd.DataFrame()
-DF_PREDICTED_PRICES_3 = pd.DataFrame()
+
 
 # ##############################
 # ALLOCATE_PORTFOLIO 
